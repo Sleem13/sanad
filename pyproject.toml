@@ -1,0 +1,15 @@
+[project]
+name = "sanad"
+version = "0.1.0"
+description = "SANAD (سند) - pilot foundation for Arabic judicial-document digitization (provisional design, not a validated system)"
+requires-python = ">=3.11"
+dependencies = ["fastapi", "uvicorn[standard]", "sqlalchemy>=2", "pydantic>=2", "pillow", "jsonschema", "python-multipart"]
+[project.optional-dependencies]
+dev = ["pytest", "httpx"]
+paddle = ["paddleocr[doc-parser]"]   # NOT installed by default; see docs/ADR-003
+gemma = ["transformers>=5", "torch", "torchvision", "accelerate"] # research only; runtime compatibility must be validated
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+[tool.setuptools.packages.find]
+where = ["src"]

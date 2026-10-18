@@ -1,0 +1,16 @@
+/* Physical image coordinates are unchanged when the interface is mirrored. */
+html[dir="rtl"]{font-family:Tahoma,"Segoe UI",Arial,sans-serif;line-height:1.7}
+html[dir="rtl"] h1,html[dir="rtl"] dialog h2{font-family:Tahoma,"Segoe UI",Arial,sans-serif;letter-spacing:0;font-weight:600;line-height:1.5}
+html[dir="rtl"] h1{font-size:30px}
+html[dir="rtl"] .sidebar{inset:0 0 0 auto}
+html[dir="rtl"] main{margin-left:0;margin-right:190px}
+html[dir="rtl"] nav button,html[dir="rtl"] .doc-row{text-align:start}
+html[dir="rtl"] .toolbar .muted{margin-left:0;margin-inline-start:auto}
+html[dir="rtl"] .editor-toolbar strong{margin-right:0;margin-inline-end:auto}
+html[dir="rtl"] .doc-row.active{border-left:0;border-inline-start:2px solid var(--accent);padding-left:16px;padding-inline-start:14px}
+html[dir="rtl"] .system-row span:last-child{text-align:end}
+html[dir="rtl"] .transcript #regions{padding-right:0;padding-inline-end:3px}
+html[dir="rtl"] .region textarea,html[dir="rtl"] #dataset-text{font-family:Tahoma,"Segoe UI",Arial,sans-serif}
+html[dir="rtl"] .workflow-row b{font-family:Tahoma,sans-serif}
+@media(max-width:1150px){html[dir="rtl"] main{margin-left:0;margin-right:160px}html[dir="rtl"] h1{font-size:27px}}
+@media(max-width:700px){html[dir="rtl"] main{margin:0}html[dir="rtl"] .sidebar{inset:auto}html[dir="rtl"] h1{font-size:24px}}

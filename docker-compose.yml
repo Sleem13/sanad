@@ -1,0 +1,21 @@
+# DEV/DEMO profile. UNTESTED in the build environment (no Docker available). Secure deployment needs its own config:
+# SANAD_ENV=secure + SANAD_USERS_FILE (IdP-backed), PostgreSQL, TLS termination, secrets from a vault.
+services:
+  api:
+    build: .
+    environment: { SANAD_ENV: dev, SANAD_ENGINE: paddleocr_arabic, SANAD_ALLOW_EXTERNAL: "false" }
+    ports: ["127.0.0.1:8000:8000"]
+    volumes: ["sanad-data:/data"]
+    healthcheck: { test: ["CMD", "python", "-c", "import urllib.request as u;u.urlopen('http://localhost:8000/healthz')"], interval: 15s }
+  worker:
+    build: .
+    command: ["python", "-m", "sanad.worker"]
+    environment: { SANAD_ENV: dev, SANAD_ENGINE: paddleocr_arabic }
+    volumes: ["sanad-data:/data"]
+    depends_on: [api]
+  # Pilot-hardware profile (NOT enabled): PaddleOCR-VL vLLM server per official docs; GPU CC>=8.0, CUDA>=12.6.
+  # vlm:
+  #   image: <mirrored paddleocr-genai-vllm-server offline image>
+  #   command: paddleocr genai_server --model_name PaddleOCR-VL-1.6-0.9B --host 0.0.0.0 --port 8118 --backend vllm
+  #   deploy: { resources: { reservations: { devices: [{ capabilities: [gpu] }] } } }
+volumes: { sanad-data: {} }

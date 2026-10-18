@@ -1,0 +1,153 @@
+{
+  "format": "sanad-weights-1",
+  "files": [
+    {
+      "path": "paddle-vl/PaddleOCR-VL-1.6-GGUF-mmproj.gguf",
+      "restore": "models/paddle-vl/PaddleOCR-VL-1.6-GGUF-mmproj.gguf",
+      "sha256": "204d757d7610d9b3faab10d506d69e5b244e32bf765e2bab2d0167e65e0a058a"
+    },
+    {
+      "path": "paddle-vl/PaddleOCR-VL-1.6-GGUF.gguf",
+      "restore": "models/paddle-vl/PaddleOCR-VL-1.6-GGUF.gguf",
+      "sha256": "f3ae46ec885050acf4b3d31944431e1fd90d50664fb09126af4a3c050ba14ee8"
+    },
+    {
+      "path": "layout/inference.json",
+      "restore": "models/layout/inference.json",
+      "sha256": "2b68367c5b312a03de5a6e1642c597c8f95165a7e40cd59c6700cf4a5042f4fd"
+    },
+    {
+      "path": "layout/inference.pdiparams",
+      "restore": "models/layout/inference.pdiparams",
+      "sha256": "70bd316b0582769ec968829fd1feb1a6a58b7c941b938327e551b6b12b45c137"
+    },
+    {
+      "path": "layout/inference.yml",
+      "restore": "models/layout/inference.yml",
+      "sha256": "506fcfac13b3b546ae40d7886b44126420f392adb694e3f8bb6a6286a1f90fdc"
+    },
+    {
+      "path": "arabic/PP-OCRv5_server_det/inference.json",
+      "restore": "paddlex/PP-OCRv5_server_det/inference.json",
+      "sha256": "af5876933d8806a1b50d895867e0781e135cd92ff37381992828fc8d1b842d28"
+    },
+    {
+      "path": "arabic/PP-OCRv5_server_det/inference.yml",
+      "restore": "paddlex/PP-OCRv5_server_det/inference.yml",
+      "sha256": "28fb721efc3634fc8aa677e474b9602cb815a91cf569ef357a7a553d7b3ce685"
+    },
+    {
+      "path": "arabic/PP-OCRv5_server_det/inference.pdiparams",
+      "restore": "paddlex/PP-OCRv5_server_det/inference.pdiparams",
+      "sha256": "183146fe9d9910352f68482f623bcbbb9fa7b9e8fa1463b9ad288cef00524d2d"
+    },
+    {
+      "path": "arabic/arabic_PP-OCRv5_mobile_rec/inference.json",
+      "restore": "paddlex/arabic_PP-OCRv5_mobile_rec/inference.json",
+      "sha256": "d43832804d89c0e18d59f8446a3babd0ef60c44bc335efddac3176caf71d50af"
+    },
+    {
+      "path": "arabic/arabic_PP-OCRv5_mobile_rec/inference.yml",
+      "restore": "paddlex/arabic_PP-OCRv5_mobile_rec/inference.yml",
+      "sha256": "21368419e6c016c31db55d316d59e11c128e1913e6e6fe10287084710043d3a6"
+    },
+    {
+      "path": "arabic/arabic_PP-OCRv5_mobile_rec/inference.pdiparams",
+      "restore": "paddlex/arabic_PP-OCRv5_mobile_rec/inference.pdiparams",
+      "sha256": "4b4271fd1dd89a40b2056e1a42e58de7c0df2fdcf1a97ca9a8916d7ec45f9143"
+    }
+  ],
+  "ollama_blobs": [
+    {
+      "name": "sha256-4bf7b0a45f1af5d9f6f8b847044d8379eef6b36f3ca8b4dcc63a8dfed7426e53",
+      "sha256": "4bf7b0a45f1af5d9f6f8b847044d8379eef6b36f3ca8b4dcc63a8dfed7426e53",
+      "parts": [
+        {
+          "path": "ollama/blobs/sha256-4bf7b0a45f1af5d9f6f8b847044d8379eef6b36f3ca8b4dcc63a8dfed7426e53.part000",
+          "bytes": 144,
+          "sha256": "4bf7b0a45f1af5d9f6f8b847044d8379eef6b36f3ca8b4dcc63a8dfed7426e53"
+        }
+      ]
+    },
+    {
+      "name": "sha256-f06e91e18fc74295d0c781bf91622508c75655e2c18ed869d52447ffe1e667e1",
+      "sha256": "f06e91e18fc74295d0c781bf91622508c75655e2c18ed869d52447ffe1e667e1",
+      "parts": [
+        {
+          "path": "ollama/blobs/sha256-f06e91e18fc74295d0c781bf91622508c75655e2c18ed869d52447ffe1e667e1.part000",
+          "bytes": 1073741824,
+          "sha256": "be8c7080e563dc1f6b8cf90f41affdfd078852811873ce6830e99e55a00cca8c"
+        },
+        {
+          "path": "ollama/blobs/sha256-f06e91e18fc74295d0c781bf91622508c75655e2c18ed869d52447ffe1e667e1.part001",
+          "bytes": 1073741824,
+          "sha256": "0383674f1df4b59b0467534a157dd81d552c48a453437cd517e20b5ca29d4c01"
+        },
+        {
+          "path": "ollama/blobs/sha256-f06e91e18fc74295d0c781bf91622508c75655e2c18ed869d52447ffe1e667e1.part002",
+          "bytes": 351528640,
+          "sha256": "2c7a5f6337c2f6a4946571f734ecd3aadfa69b57cb91037e617c0d99ce87ecbc"
+        }
+      ]
+    },
+    {
+      "name": "sha256-7a50f9607a47389c028f2598c1f2d3e23b61913b4ce3c4a9eaaca62de1b9e098",
+      "sha256": "7a50f9607a47389c028f2598c1f2d3e23b61913b4ce3c4a9eaaca62de1b9e098",
+      "parts": [
+        {
+          "path": "ollama/blobs/sha256-7a50f9607a47389c028f2598c1f2d3e23b61913b4ce3c4a9eaaca62de1b9e098.part000",
+          "bytes": 851251104,
+          "sha256": "7a50f9607a47389c028f2598c1f2d3e23b61913b4ce3c4a9eaaca62de1b9e098"
+        }
+      ]
+    },
+    {
+      "name": "sha256-e0a42594d802e5d31cdc786deb4823edb8adff66094d49de8fffe976d753e348",
+      "sha256": "e0a42594d802e5d31cdc786deb4823edb8adff66094d49de8fffe976d753e348",
+      "parts": [
+        {
+          "path": "ollama/blobs/sha256-e0a42594d802e5d31cdc786deb4823edb8adff66094d49de8fffe976d753e348.part000",
+          "bytes": 358,
+          "sha256": "e0a42594d802e5d31cdc786deb4823edb8adff66094d49de8fffe976d753e348"
+        }
+      ]
+    },
+    {
+      "name": "sha256-dd084c7d92a3c1c14cc09ae77153b903fd2024b64a100a0cc8ec9316063d2dbc",
+      "sha256": "dd084c7d92a3c1c14cc09ae77153b903fd2024b64a100a0cc8ec9316063d2dbc",
+      "parts": [
+        {
+          "path": "ollama/blobs/sha256-dd084c7d92a3c1c14cc09ae77153b903fd2024b64a100a0cc8ec9316063d2dbc.part000",
+          "bytes": 8432,
+          "sha256": "dd084c7d92a3c1c14cc09ae77153b903fd2024b64a100a0cc8ec9316063d2dbc"
+        }
+      ]
+    },
+    {
+      "name": "sha256-3116c52250752e00dd06b16382e952bd33c34fd79fc4fe3a5d2c77cf7de1b14b",
+      "sha256": "3116c52250752e00dd06b16382e952bd33c34fd79fc4fe3a5d2c77cf7de1b14b",
+      "parts": [
+        {
+          "path": "ollama/blobs/sha256-3116c52250752e00dd06b16382e952bd33c34fd79fc4fe3a5d2c77cf7de1b14b.part000",
+          "bytes": 77,
+          "sha256": "3116c52250752e00dd06b16382e952bd33c34fd79fc4fe3a5d2c77cf7de1b14b"
+        }
+      ]
+    },
+    {
+      "name": "sha256-68ceab7e468a31c988b44d5a4984a0e21f58c4f7158c6ce29c1804babac38df7",
+      "sha256": "68ceab7e468a31c988b44d5a4984a0e21f58c4f7158c6ce29c1804babac38df7",
+      "parts": [
+        {
+          "path": "ollama/blobs/sha256-68ceab7e468a31c988b44d5a4984a0e21f58c4f7158c6ce29c1804babac38df7.part000",
+          "bytes": 1282,
+          "sha256": "68ceab7e468a31c988b44d5a4984a0e21f58c4f7158c6ce29c1804babac38df7"
+        }
+      ]
+    }
+  ],
+  "ollama_manifest": {
+    "path": "ollama/gemma3-4b.manifest.json",
+    "sha256": "01e634c54b8d2dbc02b3804fa6165aa4952e19a4b9558fd51a2a496e51a252c1"
+  }
+}

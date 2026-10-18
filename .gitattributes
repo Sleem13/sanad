@@ -1,0 +1,4 @@
+weights/** -text
+weights/**/*.gguf filter=lfs diff=lfs merge=lfs -text
+weights/**/*.pdiparams filter=lfs diff=lfs merge=lfs -text
+weights/ollama/blobs/*.part* filter=lfs diff=lfs merge=lfs -text

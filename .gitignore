@@ -1,0 +1,22 @@
+data/
+__pycache__/
+*.db
+.env
+.venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+*.pyc
+*.log
+.env.*
+ChatGPT Image*.png
+# The supplied upstream tree includes local GUI inputs/results. Vendor only the
+# Python package needed by SANAD, rather than uploading those local documents.
+PaddleOCR-main/*
+!PaddleOCR-main/paddleocr/
+!PaddleOCR-main/LICENSE
+!PaddleOCR-main/README.md
+!PaddleOCR-main/pyproject.toml
+!PaddleOCR-main/setup.py
+!PaddleOCR-main/MANIFEST.in
+!PaddleOCR-main/requirements.txt

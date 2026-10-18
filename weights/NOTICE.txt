@@ -1,0 +1,11 @@
+Gemma is provided under and subject to the Gemma Terms of Use found at ai.google.dev/gemma/terms.
+
+Gemma 3 weights and derivatives are subject to the use restrictions in Section 3.2
+of the accompanying GEMMA-LICENSE.txt, including the Gemma Prohibited Use Policy:
+https://ai.google.dev/gemma/prohibited_use_policy
+Use and redistribution are licensed only subject to those terms and restrictions.
+
+PaddleOCR-VL, PP-DocLayoutV3 and PP-OCRv5 models are provided by PaddlePaddle.
+Their Apache-2.0 license is reproduced in PADDLE-LICENSE.txt. Model names, exact
+source revisions, URLs and checksums are recorded in upstream-manifest.json and
+index.json. These upstream weights have not been fine-tuned as a SANAD checkpoint.
