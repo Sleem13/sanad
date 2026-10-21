@@ -27,6 +27,15 @@ Neither model's weights are averaged or automatically trained from predictions.
 
 ## Windows CPU setup
 
+For CPUs where the Paddle layout runtime cannot load, select **PaddleOCR-VL ·
+full page** (`paddleocr_vl_full_page`) beside Extract page. Start VLM in System
+and wait for Ready first. This explicit mode sends each page directly to the
+local llama.cpp service with `OCR:` and bypasses PP-DocLayoutV3. It returns one
+whole-page region requiring review, without detected line, table, or seal
+coordinates. Token-limited responses are flagged as potentially incomplete.
+The original layout mode remains available separately; no automatic fallback
+occurs. Full-page CPU inference can take minutes, bounded to 30 minutes per page.
+
 The supplied `PaddleOCR-main/.venv` remains isolated from the API environment.
 
 ```powershell
@@ -89,3 +98,9 @@ Official references:
 
 The repository also includes a Git LFS model bundle. See weights/README.md to restore
 weights locally instead of downloading them again. This does not publish document data.
+
+Full-page mode v2 removes outer white screenshot margins, applies autocontrast,
+and upscales small inputs by at most 2x (without recovering lost detail). Crop
+offsets and submitted dimensions are recorded in the raw result. Repetitive
+generations are blocked instead of saved as successful OCR. Whole-page SVGs
+are unpositioned transcripts and suppress repetitive historical output.

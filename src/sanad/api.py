@@ -249,9 +249,9 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
         if not (who.has("ingest") or who.has("assign")):
             raise Forbidden("job control requires operator or supervisor")
         engine_id = (body.engine if body else None) or cfg.engine
-        if engine_id not in {"paddleocr_arabic", "paddleocr_vl"}:
+        if engine_id not in {"paddleocr_arabic", "paddleocr_vl", "paddleocr_vl_full_page"}:
             raise R.Invalid("select a supported real pipeline")
-        if engine_id == "paddleocr_vl" and app.state.vlm.status()["state"] != "ready":
+        if engine_id in {"paddleocr_vl", "paddleocr_vl_full_page"} and app.state.vlm.status()["state"] != "ready":
             raise R.Invalid("Start the local VLM in Model controls and wait until ready")
         if any(p.status == "approved" for p in s.query(D.Page).filter_by(document_id=doc.id)):
             raise R.Conflict("approved page must be reopened before reprocessing")
@@ -277,7 +277,13 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
                     with sf() as worker_session:
                         selected = worker_session.get(D.Job, job_id)
                         from .engines.local_vlm import LocalVLMEngine
-                        engine = LocalVLMEngine(cfg.data_dir, api_key=app.state.vlm.key) if selected.engine_id == "paddleocr_vl" else PaddleArabicEngine()
+                        from .engines.full_page_vlm import FullPageVLMEngine
+                        if selected.engine_id == "paddleocr_vl_full_page":
+                            engine = FullPageVLMEngine(cfg.data_dir, api_key=app.state.vlm.key)
+                        elif selected.engine_id == "paddleocr_vl":
+                            engine = LocalVLMEngine(cfg.data_dir, api_key=app.state.vlm.key)
+                        else:
+                            engine = PaddleArabicEngine()
                         process_job(worker_session, cfg, engine, selected)
                         worker_session.commit()
                 except Exception as exc:

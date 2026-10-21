@@ -27,8 +27,8 @@ class Settings:
         s.data_dir = Path(os.getenv("SANAD_DATA_DIR", "./data"))
         s.db_url = os.getenv("SANAD_DB_URL", f"sqlite:///{s.data_dir}/sanad.db")
         s.engine = os.getenv("SANAD_ENGINE", "paddleocr_vl")
-        if s.engine not in {"paddleocr_arabic", "paddleocr_vl"}:
-            raise ValueError("SANAD_ENGINE must select a real pipeline: paddleocr_arabic or paddleocr_vl")
+        if s.engine not in {"paddleocr_arabic", "paddleocr_vl", "paddleocr_vl_full_page"}:
+            raise ValueError("SANAD_ENGINE must select a real pipeline: paddleocr_arabic, paddleocr_vl or paddleocr_vl_full_page")
         s.allow_external_processing = os.getenv("SANAD_ALLOW_EXTERNAL", "false").lower() == "true"
         uf = os.getenv("SANAD_USERS_FILE")
         s.dev_super_admin = s.env == "dev" and not uf

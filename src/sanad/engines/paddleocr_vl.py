@@ -8,4 +8,7 @@ def build_engine(name: str, allow_external: bool = False, **kw):
         return PaddleArabicEngine(**kw)
     if name == "paddleocr_vl":
         return PaddleOCRVLEngine(**kw)
+    if name == "paddleocr_vl_full_page":
+        from .full_page_vlm import FullPageVLMEngine
+        return FullPageVLMEngine(**kw)
     raise ValueError(f"unknown engine {name}")

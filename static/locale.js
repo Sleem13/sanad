@@ -22,7 +22,7 @@ const labels = {
  environment:'بيئة التشغيل',engine:'محرك المعالجة',external_processing:'المعالجة الخارجية',
  database:'قاعدة البيانات',storage:'التخزين',max_upload_mb:'حد الرفع (ميغابايت)',worker:'عامل المعالجة',training:'التدريب',
  dev:'تطوير محلي',secure:'تشغيل محمي',ready:'جاهز',unavailable:'غير متاح',mock:'محرك قديم محذوف',
- paddleocr_vl:'PaddleOCR-VL',gemma:'Gemma',
+ paddleocr_vl_full_page:'PaddleOCR-VL · صفحة كاملة',whole_page_only:'نص الصفحة كاملة — دون مواضع أسطر مكتشفة',generation_truncated:'وصل النص إلى الحد الأقصى — تحقق من الأجزاء الناقصة',paddleocr_vl:'PaddleOCR-VL',gemma:'Gemma',
  paddleocr_arabic:'PaddleOCR العربي',
  'On-demand local OCR worker':'عامل OCR محلي يعمل عند بدء المعالجة',
  'legacy synthetic content cannot be approved; run a real OCR pipeline':'هذا ناتج قديم غير حقيقي. شغّل OCR العربي قبل الاعتماد.',
@@ -32,7 +32,7 @@ const labels = {
  'research runner only; inference unverified':'مشغّل بحثي فقط؛ لم يُتحقق من الاستدلال بعد',
  'No trained SANAD checkpoint or verified training GPU':'لا توجد نسخة مدرّبة من سند أو بطاقة رسومية متحقق منها للتدريب'
 };
-const enLabels={generation_repetition:'VLM repetition — review before approval',long_vlm_block:'Long block — check completeness',cross_engine_disagreement:'OCR and VLM disagree — compare with source',starting:'Loading model',stopped:'Stopped',not_provisioned:'Weights not installed',vlm_needs_review:'VLM reading needs review',issuer:'Issuer',recipient:'Recipient',date:'Date',reference_number:'Reference number',person:'Person',ocr_disagreement:'OCR readings disagree — check source',numbers_need_review:'Check numbers against source',low_ocr_score:'Low engine score — review text',low_resolution_source:'Low-resolution source',paddleocr_vl:'PaddleOCR-VL',gemma:'Gemma',succeeded:'Completed',running:'Running',in_review:'In review',not_processed:'Not processed',requires_review:'Needs review',partial_failure:'Partial failure',ready:'Ready',false:'Disabled',true:'Enabled',paddleocr_arabic:'Arabic PaddleOCR',mock:'Removed legacy engine',max_upload_mb:'Upload limit (MB)',dev:'Local development',secure:'Secure',raw:'OCR output',human_edited:'Human edited',non_text_region:'Non-text region'};
+const enLabels={paddleocr_vl_full_page:'PaddleOCR-VL · full page',whole_page_only:'Whole-page text — no detected line positions',generation_truncated:'Output reached token limit — check for missing text',generation_repetition:'VLM repetition — review before approval',long_vlm_block:'Long block — check completeness',cross_engine_disagreement:'OCR and VLM disagree — compare with source',starting:'Loading model',stopped:'Stopped',not_provisioned:'Weights not installed',vlm_needs_review:'VLM reading needs review',issuer:'Issuer',recipient:'Recipient',date:'Date',reference_number:'Reference number',person:'Person',ocr_disagreement:'OCR readings disagree — check source',numbers_need_review:'Check numbers against source',low_ocr_score:'Low engine score — review text',low_resolution_source:'Low-resolution source',paddleocr_vl:'PaddleOCR-VL',gemma:'Gemma',succeeded:'Completed',running:'Running',in_review:'In review',not_processed:'Not processed',requires_review:'Needs review',partial_failure:'Partial failure',ready:'Ready',false:'Disabled',true:'Enabled',paddleocr_arabic:'Arabic PaddleOCR',mock:'Removed legacy engine',max_upload_mb:'Upload limit (MB)',dev:'Local development',secure:'Secure',raw:'OCR output',human_edited:'Human edited',non_text_region:'Non-text region'};
 registerTranslations(Object.fromEntries(Object.entries(labels).map(([key,value])=>[value,enLabels[key]??(key.includes(' ')?key:key.replaceAll('_',' ').replace(/^./,c=>c.toUpperCase()))])));
 export function label(value){return language==='ar'?(labels[value]??String(value)):(enLabels[value]??(labels[value]?t(labels[value]):String(value)));}
 export function num(value){return new Intl.NumberFormat(language==='ar'?'ar-EG':'en-US').format(value);}
@@ -76,6 +76,7 @@ const errors = {
  'content derived from the MOCK engine cannot be approved (demo approval is dev-only)':'لا يمكن اعتماد المحتوى التجريبي خارج بيئة التطوير.'
 };
 function arabicError(detail,status=0){
+ if(typeof detail==='string'&&detail.startsWith('VLM output rejected: repetitive generation'))return 'رُفض ناتج VLM لأنه يكرر النص نفسه. لم يُحفظ كاستخراج ناجح. استخدم صورة أوضح أو أدخل النص يدوياً.';
  if(typeof detail!=='string')return 'البيانات المدخلة غير صالحة. تحقق من الحقول المطلوبة.';
  if(errors[detail])return errors[detail];
  if(/database is locked|OperationalError/.test(detail))return 'قاعدة البيانات مشغولة. انتظر اكتمال العملية الحالية ثم أعد المحاولة.';

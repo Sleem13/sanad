@@ -64,7 +64,7 @@ async function loadPage(id){
  const request=++pageRequest;state.page=id;state.content=null;$('page-image').hidden=true;$('understanding-output').replaceChildren();$('quality-note').hidden=true;$('regions').replaceChildren(node('p','جارٍ تحميل النص…','empty'));$('boxes').replaceChildren();$('legacy-banner').hidden=true;$('version').textContent=t('');$('source-empty').hidden=true;
  await image(`/pages/${id}/image`,'page-image');if(request!==pageRequest)return;
  try{const contentResult=await api(`/pages/${id}/content`);if(request!==pageRequest)return;state.content=contentResult;renderRegions();}
- catch(e){if(e.status===409){$('regions').replaceChildren(node('p','لم يكتمل التعرف بعد. راجع قائمة المهام أدناه. اضغط «تشغيل OCR العربي» لاستخراج النص الحقيقي.','empty'));$('history').textContent=t('لا يوجد إصدار ناتج عن التعرف بعد.');}else throw e;}
+ catch(e){if(e.status===409){$('regions').replaceChildren(node('p','لم يكتمل التعرف بعد. اختر محرك الاستخراج ثم اضغط «استخراج الصفحة».','empty'));$('history').textContent=t('لا يوجد إصدار ناتج عن التعرف بعد.');}else throw e;}
  syncButtons();setStage();refreshUnderstanding().catch(()=>{});
 }
 function setStage(){let stage=state.content?(state.content.kind==='approved'?3:2):1;if(state.doc?.deliveries?.some(d=>d.status==='delivered'))stage=4;document.querySelectorAll('.steps>div').forEach((e,i)=>e.classList.toggle('current',i===stage));}
@@ -96,12 +96,15 @@ function renderJobs(){
  const current=real.find(j=>j.status==='running')??real[0];
  const panel=node('div',undefined,'processing-panel');
  if(!current){panel.append(node('h3','جاهز للتعرف'),node('p','لم تبدأ المعالجة بعد.','muted'));target.append(panel);return;}
- const heading=node('div',undefined,'processing-heading');heading.append(node('h3','المهمة الحالية'),node('span',label(current.status),`status ${current.status}`));panel.append(heading);
+ const active=['running','queued'].includes(current.status);
+ const heading=node('div',undefined,'processing-heading');heading.append(node('h3',active?'المهمة الحالية':(language==='ar'?'آخر محاولة معالجة':'Last processing attempt')),node('span',label(current.status),`status ${current.status}`));panel.append(heading);
  panel.append(node('strong',`${label(current.engine)} · CPU`));
+ const selected=$('pipeline-engine').value;
+ if(selected!==current.engine)panel.append(node('p',language==='ar'?`المحرك المحدد للمحاولة التالية: ${label(selected)}. تغيير الاختيار لا يبدأ المعالجة ولا يغيّر سجل المحاولة السابقة.`:`Selected for the next attempt: ${label(selected)}. Changing the selection does not start processing or change the previous attempt.`, 'muted'));
  const descriptions={running:'جارٍ تحميل النموذج واستخراج النص. يمكنك متابعة العمل؛ ستظهر النتيجة تلقائياً.',succeeded:'حُفظ النص؛ يمكنك الآن مراجعته واعتماده.',queued:'لم تبدأ المعالجة بعد.'};
  if(descriptions[current.status])panel.append(node('p',descriptions[current.status],'muted'));
  if(current.last_error&&['failed','blocked','partial_failure'].includes(current.status)){
-  const issue=node('div',undefined,'processing-error');issue.append(node('strong','السبب'),node('p',errorMessage(current.last_error)),node('strong','الإجراء المقترح'),node('p','أعد تشغيل التعرف لتطبيق الإصلاح الحالي.'));panel.append(issue);
+  const issue=node('div',undefined,'processing-error');issue.append(node('strong','السبب'),node('p',errorMessage(current.last_error)),node('strong','الإجراء المقترح'),node('p',language==='ar'?'تحقق من حالة VLM في النظام. على هذا الجهاز اختر «VLM · صفحة كاملة» لتجاوز كاشف التخطيط المعتمد على Paddle.':'Check VLM status in System. On this CPU, choose full-page VLM to bypass the Paddle layout detector.'));panel.append(issue);
  }
  const controls=node('div',undefined,'button-row');
  const controllable=can('ingest')||can('assign');
@@ -163,6 +166,10 @@ $('page-layout').onclick=()=>{
  if(!state.content||state.content.is_mock)return;
  $('layout-title').textContent=language==='ar'?'الصفحة النصية · نفس مواضع الأصل':'Full-page text · source positions';
  $('layout-note').textContent=language==='ar'?'معاينة نص OCR الحالي، بما فيه التعديلات غير المحفوظة. مواضع الكتل من الأصل؛ الخط وتوزيع السطور داخل الكتل تقريبيان. الأخطاء تحتاج مراجعة.':'Preview of current OCR text, including unsaved edits. Block positions follow the source; fonts and line placement within blocks are approximate. Errors need review.';
+ if(state.content.content.regions.some(r=>r.flags?.includes('whole_page_only'))){
+  $('layout-title').textContent=language==='ar'?'نص دون مواضع أسطر':'Unpositioned transcript';
+  $('layout-note').textContent=language==='ar'?'استخراج الصفحة كاملة لا يحدد مواضع الأسطر. هذه معاينة نصية وليست إعادة بناء لتخطيط الأصل. النص المتكرر غير موثوق.':'Full-page extraction does not detect line positions. This is a transcript, not a reconstruction of the original layout. Repeated generation is unreliable.';
+ }
  $('layout-original-title').textContent=language==='ar'?'الأصل':'Original';
  $('layout-text-title').textContent=language==='ar'?'النص المستخرج':'Extracted text';
  $('layout-download').textContent=language==='ar'?'تنزيل الصفحة SVG':'Download page SVG';
@@ -180,10 +187,15 @@ $('layout-download').onclick=()=>{
 $('page-layout').textContent=language==='ar'?'عرض الصفحة النصية':'Full-page text';
 
 const bilingual=(ar,en)=>language==='ar'?ar:en;
-$('pipeline-engine').value=localStorage.getItem('sanad.pipeline')||'paddleocr_vl';
+$('pipeline-engine').value=localStorage.getItem('sanad.pipeline')||'paddleocr_vl_full_page';
+$('pipeline-engine').querySelector('[value="paddleocr_vl_full_page"]').textContent=bilingual('PaddleOCR-VL · صفحة كاملة','PaddleOCR-VL · full page');
+$('pipeline-engine').querySelector('[value="paddleocr_vl"]').textContent=bilingual('PaddleOCR-VL · تخطيط الصفحة','PaddleOCR-VL · layout');
 $('recognize').textContent=bilingual('استخراج الصفحة','Extract page');
 $('pipeline-engine').setAttribute('aria-label',bilingual('محرك الاستخراج','Extraction engine'));
-$('pipeline-engine').onchange=()=>{localStorage.setItem('sanad.pipeline',$('pipeline-engine').value);syncButtons();};
+const engineNote=node('p',undefined,'muted');engineNote.id='engine-mode-note';$('pipeline-engine').closest('.editor-toolbar').after(engineNote);
+function renderEngineNote(){engineNote.textContent=$('pipeline-engine').value==='paddleocr_vl_full_page'?bilingual('VLM للصفحة كاملة: يعمل دون كاشف التخطيط. النص منطقة واحدة؛ لا توجد مواضع أسطر أو جداول مكتشفة. قد يستغرق عدة دقائق ويحتاج مراجعة.','Full-page VLM bypasses layout detection. Text is one region, with no detected line or table positions. CPU processing can take several minutes and requires review.'):bilingual('مسار تخطيط الصفحة ومحرك OCR العربي يحتاجان إلى بيئة Paddle متوافقة مع المعالج.','Layout VLM and Arabic OCR require a Paddle runtime compatible with the CPU.');}
+renderEngineNote();
+$('pipeline-engine').onchange=()=>{localStorage.setItem('sanad.pipeline',$('pipeline-engine').value);syncButtons();renderJobs();renderEngineNote();};
 $('understanding-title').textContent=bilingual('فهم المستند · Gemma','Document understanding · Gemma');
 $('understanding-note').textContent=bilingual('اقتراحات مرتبطة بالنص المحفوظ، تحتاج مراجعة. لا تُعدّل نص الصفحة أو تعتمد المستند.','Proposals reference saved source text and need review. They do not edit or approve the page.');
 $('understanding-start').textContent=bilingual('استخراج الحقول','Extract fields');
